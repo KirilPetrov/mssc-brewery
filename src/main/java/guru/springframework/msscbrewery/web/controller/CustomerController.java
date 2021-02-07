@@ -5,13 +5,10 @@ import guru.springframework.msscbrewery.web.model.CustomerDto;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.List;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 /**
  * Created by jt on 2019-04-21.
@@ -53,13 +50,4 @@ public class CustomerController {
         customerService.deleteById(customerId);
     }
 
-    @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<List> handleConstraintViolationException(MethodArgumentNotValidException e) {
-        List<String> errors = e.getBindingResult().getFieldErrors()
-                .stream()
-                .map(error -> error.getField() + " : " + error.getDefaultMessage())
-                .collect(Collectors.toList());
-
-        return ResponseEntity.badRequest().body(errors);
-    }
 }
